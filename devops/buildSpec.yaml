@@ -1,0 +1,29 @@
+version: 0.2
+env:
+    git-credential-helper: yes
+phases:
+    install:
+      runtime-versions:
+        python: 3.9
+      commands:
+        - pwd
+        - ls
+        - python -m pip install --upgrade aws-sam-cli
+        - python -m pip install pyOpenSSL --upgrade
+        - sam --version
+        - cd layer
+        - mkdir python
+        - cd python
+        - pip install -r ../requirements.txt
+        - ls -lhrt
+        - cd ../..
+        - echo ${REGION}
+    build:
+      commands:
+        - sam build -t ${SAM_TEMPLATE} --region ${REGION}
+        - sam package --s3-bucket $ARTIFACT_BUCKET --region $REGION --output-template-file packaged.yaml
+         
+artifacts:
+  files:
+    - packaged.yaml
+    - '**/*'
