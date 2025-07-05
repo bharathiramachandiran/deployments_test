@@ -18,8 +18,6 @@ phases:
         - pip install -r requirements.txt -t python
         - ls -lhR
         - cd ../..
-        - echo "REGION: ${REGION}"
-
 
     build:
       commands:
