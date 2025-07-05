@@ -6,18 +6,21 @@ phases:
       runtime-versions:
         python: 3.9
       commands:
+        - echo "Installing dependencies..."
         - pwd
-        - ls
+        - ls -al
+        - python -m pip install --upgrade pip
         - python -m pip install --upgrade aws-sam-cli
         - python -m pip install pyOpenSSL --upgrade
         - sam --version
-        - cd layer
-        - mkdir python
-        - cd python
-        - pip install -r ../requirements.txt
-        - ls -lhrt
+        - cd devops/layers
+        - mkdir -p python
+        - pip install -r requirements.txt -t python
+        - ls -lhR
         - cd ../..
-        - echo ${REGION}
+        - echo "REGION: ${REGION}"
+
+
     build:
       commands:
         - sam build -t ${SAM_TEMPLATE} --region ${REGION}
